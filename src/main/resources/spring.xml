@@ -1,0 +1,70 @@
+<!--https://docs.spring.io/spring-framework/docs/4.2.x/spring-framework-reference/html/xsd-configuration.html-->
+<!--Spring XML Definition-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+<!--    1 //////////////////// App1 -->
+<!--    Declare the class objects for ready to be dependency injection here ...  -->
+<!--    More Beans Declared , More Objects will be created at time setting up Application Context-->
+
+<!--    By , Default Spring Scope follows singleton objection creation -->
+<!--    scope : singleton : creates only one object while setting up the context-->
+<!--    scope : prototype : creates object everytime getBean is called leading to more than one object-->
+<!--    <bean id="alien" class="spring.first.Alien" scope="prototype"/>-->
+
+<!--    Multiple objects can be created with different id-->
+<!--    <bean id="alien2" class="spring.first.Alien"/> -->
+
+    <bean id="alien" class="spring.first.Alien"/>
+    <bean id="laptop" class="spring.first.Laptop"/>
+
+
+
+<!--    2 //////////////////// App2 -->
+<!--    Injection : property assigns the value to the class var ( th. getter/setter )-->
+<!--    for non-primitive value , ref is used -->
+<!--    1. setter injection -->
+    <bean id="bus" class="spring.first.Bus">
+        <property name="mile" value="99"> </property>
+        <property name="eng" ref="engine"> </property>
+    </bean>
+<!--    2. constructor injection -->
+    <bean id="car" class="spring.first.Car">
+        <constructor-arg index="0" value="100" />
+        <constructor-arg index="1" value="70" />
+        <constructor-arg index="2" ref="engine" />
+    </bean>
+    <bean id="engine" class="spring.first.Engine"/>
+
+
+
+<!--    3 ////////////////////// App-->
+<!--    Autowiring -->
+<!--    1.byName < matches the name of the variable with the object-id> -->
+<!--    2.byType < matches Interface> -->
+<!--    primary beans - in case of ambiguity with autowiring , we can set a class as primary beans -->
+<!--    lazy beans - singleton classes created only when they are called for the first time-->
+<!--    high precedence to explicitly mentioned property than auto-wiring-->
+    <bean id="human" class="spring.first.Human" autowire="byType">
+        <property name="age" value="27" />
+<!--        <property name="anm" ref="cat" />-->
+    </bean>
+    <bean id="dog" class="spring.first.Dog" primary="true"/>
+    <bean id="cat" class="spring.first.Cat" lazy-init="true" />
+
+
+
+<!--    4 ////////////////////// -->
+<!--    Inner Beans : Beans(Cat) accessible only to Outer Beans(Human) -->
+<!--    <bean id="human" class="spring.first.Human" autowire="byType">-->
+<!--        <property name="age" value="27" />-->
+<!--        <property name="anm" >-->
+<!--            <bean id="cat" class="spring.first.Cat" primary="true" />-->
+<!--        </property>-->
+<!--    </bean>-->
+
+</beans>
